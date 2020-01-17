@@ -199,7 +199,7 @@ public class Review {
     return (int)round;
   }
 
-  public static String fakeReview(String filename, boolean isPostive)
+  public static String fakeReview(String filename)
   {
     String text = textToString(fileName);
     String ast = "*";
