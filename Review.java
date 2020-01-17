@@ -199,11 +199,12 @@ public class Review {
     return (int)round;
   }
 
-  public static String fakeReview(String filename)
+  public static String fakeReview(String filename, boolean isPostive)
   {
     String text = textToString(fileName);
     String ast = "*";
     String first = "";
+    String temp = "";
     String sp = " ";
     for(int i = 0; i < text.length() - 1; ++i)
     {
@@ -214,6 +215,7 @@ public class Review {
         {
           if(!text.substring(i + j, i+1 + j).equals(sp))
           {
+            temp += text.substring(i + j, i+1 + j);
             j++;
           }
           else
@@ -221,7 +223,14 @@ public class Review {
             break;
           }
         }
-        first += randomAdjective();
+        if(sentimentVal(temp) < 0)
+        {
+          first += randomNegativeAdj();
+        }
+        else
+        {
+          first += randomPositiveAdj();
+        }
         i += j;
       }
       else
@@ -239,3 +248,4 @@ public class Review {
   }
 
 }
+
