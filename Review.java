@@ -199,6 +199,40 @@ public class Review {
     return (int)round;
   }
 
+  public static String fakeReview(String filename)
+  {
+    String text = textToString(fileName);
+    String ast = "*";
+    String first = "";
+    String sp = " ";
+    for(int i = 0; i < text.length() - 1; ++i)
+    {
+      if(text.substring(i, i+1).equals(ast))
+      {
+        int j = 0;
+        while(1)
+        {
+          if(!text.substring(i + j, i+1 + j).equals(sp))
+          {
+            j++;
+          }
+          else
+          {
+            break;
+          }
+        }
+        first += randomAdjective();
+        i += j;
+      }
+      else
+      {
+        first += text.substring(i, i+1);
+      }
+    }
+
+    return first;
+  }
+
   public static void main(String args[])
   {
     System.out.println(Review.totalSentiment("26WestReview.txt"));
