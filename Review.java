@@ -199,53 +199,92 @@ public class Review {
     return (int)round;
   }
 
-  public static String fakeReview(String filename)
-  {
-    String text = textToString(fileName);
-    String ast = "*";
-    String first = "";
-    String temp = "";
+  public static String fakeReviewStronger(String fileName)
+	{
+    String text = Review.textToString(fileName);
+    String extras = text;
     String sp = " ";
-    for(int i = 0; i < text.length() - 1; ++i)
-    {
-      if(text.substring(i, i+1).equals(ast))
-      {
-        int j = 0;
-        while(1)
-        {
-          if(!text.substring(i + j, i+1 + j).equals(sp))
-          {
-            temp += text.substring(i + j, i+1 + j);
-            j++;
-          }
-          else
-          {
-            break;
-          }
-        }
-        if(sentimentVal(temp) < 0)
-        {
-          first += randomNegativeAdj();
-        }
-        else
-        {
-          first += randomPositiveAdj();
-        }
-        i += j;
-      }
-      else
-      {
-        first += text.substring(i, i+1);
-      }
-    }
+    String sr = "";
+    int count = 0;
 
-    return first;
-  }
+		for (int i = 0; i < text.length(); i++)
+		{
+			if (text.charAt(i) == '*')
+			{
+				int s = i;
+				int e;
+				while (true)
+				{
+          sr += text.substring(i, i+1);
+					i++;
+					if (text.substring(i, i+1).equals(sp)){
+            break;
+          } 
+				}
+				e = i;
+		
+        if (sentimentVal(sr) > 0){
+          text = text.substring(0, s) + randomPositiveAdj() + text.substring(e, text.length() - 1);
+        }else{
+          text = text.substring(0, s) + randomNegativeAdj() + text.substring(e, text.length() - 1);
+        }
+        sr = "";
+        count++;
+			}
+    }
+    
+    // appends on the extra bits taken off from the * in the origonal string
+    int k = count;
+    for(int i = 0; i < k; ++i)
+    {
+      text += extras.substring(extras.length() - count, extras.length() - count + 1);
+      count--;
+    }
+		return text;
+	}
+
+  public static String fakeReview(String fileName)
+	{
+    String text = Review.textToString(fileName);
+    String extras = text;
+    String sp = " ";
+    int count = 0;
+  
+		for (int i = 0; i < text.length(); i++)
+		{
+			if (text.charAt(i) == '*')
+			{
+
+				int s = i;
+				int e;
+				while (true)
+				{
+					i++;
+					if (text.substring(i, i+1).equals(sp)){
+            break;
+          }				
+        }
+				e = i;
+		
+        text = text.substring(0, s) + randomAdjective() + text.substring(e, text.length() - 1);
+        count++;
+			}
+    }
+    
+    // appends on the extra bits taken off from the * in the origonal string
+    int k = count;
+    for(int i = 0; i < k; ++i)
+    {
+      text += extras.substring(extras.length() - count, extras.length() - count + 1);
+      count--;
+    }
+  
+		return text;
+	}
 
   public static void main(String args[])
   {
-    System.out.println(Review.totalSentiment("26WestReview.txt"));
+    System.out.println(fakeReview("26WestReview.txt"));
   }
 
 }
-
